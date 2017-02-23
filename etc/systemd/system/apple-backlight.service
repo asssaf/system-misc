@@ -1,0 +1,8 @@
+[Unit]
+After=
+
+[Service]
+ExecStart=/usr/local/sbin/backlight-allow-user
+
+[Install]
+WantedBy=default.target
