@@ -1,0 +1,8 @@
+[Unit]
+After=
+
+[Service]
+ExecStart=/usr/local/sbin/apple-sysrq
+
+[Install]
+WantedBy=default.target
