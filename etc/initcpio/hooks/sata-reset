@@ -1,0 +1,26 @@
+#!/usr/bin/ash
+
+run_hook() {
+	# reset sata bus repeatedly until it manages to negotiate 3.0Gbps
+
+	HOST=/sys/class/scsi_host/host0
+
+	if [ ! -f "$HOST/scan" ]
+	then
+		echo "$0: Can't find host: $HOST"
+		return
+	fi
+
+	echo "$0: Checking SATA bus speed"
+	for try in $(seq 1 100)
+	do
+		current="$(dmesg | grep 'ata1: SATA link up' | tail -n 1 | grep '3\.0 Gbps')"
+		[ -n "$current" ] && break
+		echo "$0: Resetting $HOST ($try)"
+		echo "- - -" > /sys/class/scsi_host/host0/scan
+	done
+
+	echo "$0: Done"
+}
+
+# vim: set ft=sh ts=4 sw=4 et:
